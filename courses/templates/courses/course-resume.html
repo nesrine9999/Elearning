@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% include "navbar.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% block scripts %}
+
+{% endblock scripts %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% block content %}
+<body>
+  <!-- Page content -->
+  
+<div class="mt-13 course-container"  >
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+           <!-- Tab content -->
+          <div class="tab-content content" id="course-tabContent" oncontextmenu="return false">
+            <div class="tab-pane fade show active" id="course-intro" role="tabpanel" aria-labelledby="course-intro-tab">
+              <div class="d-flex align-items-center justify-content-between mb-4">
+                <div>
+                  <h3 class=" mb-0  text-truncate-line-2"> {{ lect.name }} </h3>
+                </div>
+                <div>
+                   <!-- Dropdown -->
+                  <span class="dropdown">
+                    <a href="#!" class="mr-2 text-muted" id="dropdownInfo" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="false">
+                      <i class="fe fe-help-circle"></i>
+                    </a>
+                    <span class="dropdown-menu dropdown-menu-lg p-3 dropdown-menu-right" aria-labelledby="dropdownInfo">
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      cupiditate consequatur rerum eius ad ut officiis
+                    </span>
+                  </span>
+                  <!-- Dropdown -->
+                  <span class="dropdown">
+                    <a class="text-muted text-decoration-none" href="#!" role="button" id="shareDropdown1"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fe fe-more-vertical"></i>
+                    </a>
+                    <span class="dropdown-menu dropdown-menu-right" aria-labelledby="shareDropdown1">
+                      <span class="dropdown-header">Share</span>
+                      <a class="dropdown-item" href="#!"><i class="fab fa-facebook dropdown-item-icon"></i>Facebook</a>
+                      <a class="dropdown-item" href="#!"><i class="fab fa-twitter dropdown-item-icon"></i>Twitter</a>
+                      <a class="dropdown-item" href="#!"><i class="fab fa-linkedin dropdown-item-icon"></i>Linked In</a>
+                      <a class="dropdown-item" href="#!"><i class="fas fa-copy dropdown-item-icon"></i>Copy Link</a>
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <!-- Video -->
+			{% if lect.extention == '.mp4' %}
+			  	{% for video in videos %}
+					{% if video.lecture == lect %}
+                		<div class="embed-responsive embed-responsive-16by9"> 
+						<video width="320" height="240" controls >
+						<source src="{{video.video.url}}" type="video/mp4">
+                		</div>
+					{% endif %}
+				{% endfor %}
+			{% elif lect.extention == '.pdf' %}
+			  	{% for file in files %}
+			  		{% if file.lecture == lect %}
+					    <iframe src="{{file.pdf.url}}#toolbar=0" width="100%" height="500px" > 
+    					</iframe>
+					{% endif %}
+				{% endfor %}
+				<a class="btn btn-primary btn-sm" onclick="resultat()"> save </a>
+			{% else %}
+				<h1> no content is here </h1>
+			{% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Card -->
+  <div class="card course-sidebar " id="courseAccordion">
+      <!-- List group -->
+      <ul class="list-group list-group-flush course-list">
+        <li class="list-group-item">
+          <h4>{{ course.name }}</h4>
+        </li>
+        <!-- List group item -->
+		{% for section in sections %}
+        <li class="list-group-item">
+          <!-- Toggle -->
+          <a class="d-flex align-items-center text-inherit text-decoration-none h4 mb-0" data-toggle="collapse"
+            href="#course{{section.id}}" role="button" aria-expanded="false" aria-controls="course{{section.id}}">
+            <div class="mr-auto">
+             {{ section.name }}
+            </div>
+            <!-- Chevron -->
+            <span class="chevron-arrow  ml-4">
+              <i class="fe fe-chevron-down font-size-md"></i>
+            </span>
+          </a>
+          <!-- Row -->
+          <!-- Collapse -->
+          <div class="collapse show" id="course{{section.id}}" data-parent="#courseAccordion">
+            <div class="py-4 nav" id="course-tabOne" role="tablist" aria-orientation="vertical"
+              style="display: inherit;">
+			  {% for lecture in lectures %}
+			  {% if lecture.section == section %}
+              <a href="{% url 'Courses:course_resume' course.id lecture.id %}" class="mb-2 d-flex justify-content-between align-items-center text-decoration-none">
+                <div class="text-truncate">
+                  <span class="icon-shape bg-light text-primary icon-sm  rounded-circle mr-2"><i
+                      class="fe fe-play  font-size-xs"></i></span>
+					  
+                  <span>{{ lecture.name }}</span>
+                </div>
+                <div class="text-truncate">
+                  <span>{{ lecture.extention }}</span>
+                </div>
+              </a>
+			  {% endif %}
+			  {% endfor %}
+              
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+  </div>
+
+</body>
+{% endblock content %}
+</html>

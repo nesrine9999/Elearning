@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+{% block scripts %}
+{% endblock scripts %}
+<!DOCTYPE html>
+<html lang="en">
+
+{% block content %}
+<body>
+	<!-- Page content -->
+	<div class="container d-flex flex-column">
+		<div class="row align-items-center justify-content-center no-gutters min-vh-100">
+			<div class="col-lg-5 col-md-8 py-8 py-xl-0">
+				<!-- Card -->
+				<div class="card shadow">
+					<!-- Card body -->
+					<div class="card-body p-6">
+						<div class="mb-4">
+							<a href="../index.html"><img src="{% static '/app/images/brand/logo/logo-icon.svg' %}" class="mb-4" alt="" /></a>
+							<h1 class="mb-1 font-weight-bold">Sign up</h1>
+							<span>Already have an account?
+								<a href="{% url 'sign-in' %}" class="ml-1">Sign in</a></span>
+						</div>
+						<!-- Form -->
+						<form method="POST" action="">
+							{% csrf_token %}
+								<!-- Username -->
+							<div class="form-group">
+								<h4>{{form.username.label}}</h4>
+								{{form.username}}
+								 
+							</div>
+								<!-- Email -->
+							<div class="form-group">
+								<h4>{{form.email.label}}</h4>
+								{{form.email}}
+							
+							</div>
+								<!-- Password1 -->
+							<div class="form-group">
+								<h4>{{form.password1.label}}</h4>
+								{{form.password1}}
+							
+							</div>
+								<!-- Password2 -->
+								<div class="form-group">
+									<h4>{{form.password2.label}}</h4>
+									{{form.password2}}
+								
+								</div>
+								<!-- Checkbox -->
+							<div class="form-group">
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="agreeCheck" />
+									<label class="custom-control-label" for="agreeCheck"><span>I agree to the <a href="#!">Terms of
+												Service </a>and
+											<a href="#!">Privacy Policy.</a></span></label>
+								</div>
+							</div>
+							<div>
+									<!-- Button -->
+								<button type="submit" class="btn btn-primary btn-block">
+									Create Free Account
+								</button>
+							</div>
+							{{ form.errors }}
+							<hr class="my-4" />
+							<div class="mt-4 text-center">
+								<!--Facebook-->
+								<a href="#!" class="btn-social btn-social-outline btn-facebook">
+									<i class="fab fa-facebook"></i>
+								</a>
+								<!--Twitter-->
+								<a href="#!" class="btn-social btn-social-outline btn-twitter">
+									<i class="fab fa-twitter"></i>
+								</a>
+								<!--LinkedIn-->
+								<a href="#!" class="btn-social btn-social-outline btn-linkedin">
+									<i class="fab fa-linkedin"></i>
+								</a>
+								<!--GitHub-->
+								<a href="#!" class="btn-social btn-social-outline btn-github">
+									<i class="fab fa-github"></i>
+								</a>
+							</div>
+						</form>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Scripts -->
+	<script>
+		/* Because i didnt set placeholder values in forms.py they will be set here using vanilla Javascript
+//We start indexing at one because CSRF_token is considered and input field 
+*/
+
+//Query All input fields
+var form_fields = document.getElementsByTagName('input')
+form_fields[1].placeholder='User Name';
+form_fields[2].placeholder='Email address here';
+form_fields[3].placeholder='***********';
+form_fields[4].placeholder='***********';
+
+
+for (var field in form_fields){	
+form_fields[field].className += ' form-control'
+}
+</script>
+
+</body>
+{% endblock content %}
+</html>
